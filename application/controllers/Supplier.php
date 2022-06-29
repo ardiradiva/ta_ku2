@@ -75,7 +75,7 @@ class Supplier extends CI_Controller
 
         $this->form_validation->set_message('required', '{field} tidak boleh kosong!');
         $this->form_validation->set_message('is_unique', '{field} sudah digunakan!');
-        if($this->form_validation->run()){
+        if ($this->form_validation->run()) {
             $data_sup = $this->db->get('supplier')->result_array();
             if ($data_sup == null) {
                 $id = 'SP000001';
@@ -84,7 +84,7 @@ class Supplier extends CI_Controller
                 foreach ($data_sup as $rkm) {
                     $code =  substr($rkm['id_supplier'], 2);
                     if ($id_code == null) {
-        
+
                         $id_code = $code;
                     } else {
                         if ($code > $id_code) {
@@ -96,54 +96,51 @@ class Supplier extends CI_Controller
             }
             // $id = rand(0000,9999);
             $data = array(
-                'id_supplier'=>$id,
-                'id_admin'=>$this->input->post('id_admin'),
-                'nama'=>$this->input->post('nama'),
-                'alamat'=>$this->input->post('alamat'),
-                'hp'=>$this->input->post('hp'),
+                'id_supplier' => $id,
+                'id_admin' => $this->input->post('id_admin'),
+                'nama' => $this->input->post('nama'),
+                'alamat' => $this->input->post('alamat'),
+                'hp' => $this->input->post('hp'),
             );
-            $masuk = $this->Admin_model->Tambah_data($data,'supplier');
-            if($masuk){
+            $masuk = $this->Admin_model->Tambah_data($data, 'supplier');
+            if ($masuk) {
                 $month = date('m');
-                if($month <=6){
+                if ($month <= 6) {
                     $periode = 1;
-                }elseif($month >= 7){
+                } elseif ($month >= 7) {
                     $periode = 2;
                 }
                 $data_nilai = $this->db->get('nilai')->result_array();
-            if ($data_nilai == null) {
-                $id_nilai = 'NI000001';
-            } else {
-                $id_code_nilai = null;
-                foreach ($data_nilai as $ni) {
-                    $ni_code =  substr($ni['id_nilai'], 2);
-                    if ($id_code_nilai == null) {
-        
-                        $id_code_nilai = $ni_code;
-                    } else {
-                        if ($ni_code > $id_code_nilai) {
+                if ($data_nilai == null) {
+                    $id_nilai = 'NI000001';
+                } else {
+                    $id_code_nilai = null;
+                    foreach ($data_nilai as $ni) {
+                        $ni_code =  substr($ni['id_nilai'], 2);
+                        if ($id_code_nilai == null) {
+
                             $id_code_nilai = $ni_code;
+                        } else {
+                            if ($ni_code > $id_code_nilai) {
+                                $id_code_nilai = $ni_code;
+                            }
                         }
                     }
+                    $id_nilai = 'NI' . str_pad($id_code_nilai + 1, 6, '0', STR_PAD_LEFT);
                 }
-                $id_nilai = 'NI' . str_pad($id_code_nilai + 1, 6, '0', STR_PAD_LEFT);
-            }
                 // $id_nilai = rand(0000,9999);
                 $data_nilai = array(
-                    'id_nilai'=>$id_nilai,
-                    'id_supplier'=>$id,
-                    'tahun'=>date('Y'),
-                    'periode'=>$periode
+                    'id_nilai' => $id_nilai,
+                    'id_supplier' => $id,
+                    'tahun' => date('Y'),
+                    'periode' => $periode
                 );
-                $this->Admin_model->Tambah_data($data_nilai,'nilai');
+                // $this->Admin_model->Tambah_data($data_nilai,'nilai');
             }
             $this->session->set_flashdata('success', 'Berhasil disimpan');
             redirect('supplier/add');
-
-
-        }else{
+        } else {
             $this->load->view("supplier/add");
-
         }
     }
 

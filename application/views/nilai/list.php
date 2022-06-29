@@ -110,7 +110,6 @@
                                                             <th style="text-align:center">Nama Supplier</th>
                                                             <th style="text-align:center">Tahun</th>
                                                             <th style="text-align:center">Periode</th>
-                                                            <th style="text-align:center">Status</th>
 
                                                             <th style="text-align:center">Aksi</th>
                                                         </tr>
@@ -125,17 +124,9 @@
                                                                 <td style="text-align:center" width="350"><?php echo $ns->nama ?></td>
                                                                 <td style="text-align:center" width="350"><?php echo $ns->tahun ?></td>
                                                                 <td style="text-align:center" width="350"><?php echo $ns->periode ?></td>
-                                                                <td style="text-align:center" class="<?php if ($ns->status == 0) {
-                                                                                                            echo "text-danger";
-                                                                                                        } else {
-                                                                                                            echo "text-success";
-                                                                                                        } ?>" width="350"><strong><?php if ($ns->status == 0) {
-                                                                                        echo "Belum Dinilai";
-                                                                                    } else {
-                                                                                        echo "Telah Dinilai";
-                                                                                    } ?></strong></td>
+
                                                                 <td style="text-align:center" width="250">
-                                                                    <a href="<?php echo site_url('nilai/edit/' . $ns->id_nilai) ?>" class="btn btn-small btn-primary"><i class="fas fa-edit"></i> Nilai</a>
+                                                                    <a href="<?php echo site_url('nilai/edit/' . $ns->id_nilai) ?>" class="btn btn-small btn-primary"><i class="fas fa-edit"></i> Edit</a>
 
                                                                 </td>
                                                             </tr>
