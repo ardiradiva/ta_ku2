@@ -61,7 +61,7 @@
 						</div>
 						<div class="card-body">
 
-							<form action="<?=base_url('nilai/UpdateNilai')?>" method="post" enctype="multipart/form-data">
+							<form action="<?= base_url('nilai/UpdateNilai') ?>" method="post" enctype="multipart/form-data">
 								<!-- Note: atribut action dikosongkan, artinya action-nya akan diproses 
 							oleh controller tempat vuew ini digunakan. Yakni index.php/nilai/edit/ID --->
 
@@ -71,7 +71,7 @@
 								<div class="form-group">
 									<b><label for="tahun">Tahun</label></b>
 
-									<select class="form-control " name="tahun">
+									<!-- <select  class="form-control " name="tahun">
 										<option>---Pilih Tahun---</option>
 										<?php
 										for ($i = 2021; $i <= 2030; $i++) {
@@ -83,13 +83,14 @@
 										}
 										?>
 
-									</select>
+									</select> -->
+									<input type="text" class="form-control" value="<?= $nilai->tahun ?>" readonly name="tahun">
 
 									<div class="invalid-feedback"></div>
 								</div>
 								<div class="form-group">
 									<b><label for="periode">Periode</label></b>
-									<select class="form-control " name="periode">
+									<!-- <select class="form-control " name="periode">
 										<option>---Pilih Periode---</option>
 										<?php
 										for ($i = 1; $i <= 2; $i++) {
@@ -101,7 +102,9 @@
 										}
 										?>
 
-									</select>
+									</select> -->
+									<input type="text" class="form-control" value="<?= $nilai->periode ?>" readonly name="periode">
+
 									<div class="invalid-feedback"></div>
 								</div>
 								<div class="form-group">
@@ -482,28 +485,28 @@
 							* required fields
 						</div>
 
-							</div>
-						</div>
 					</div>
-
 				</div>
-				<!-- /.container-fluid -->
-
 			</div>
-			<!-- End of Main Content -->
+
 		</div>
-		<!-- End of Content Wrapper -->
+		<!-- /.container-fluid -->
 
-		<!-- Footer -->
-		<!-- <?php $this->load->view("footer.php") ?> -->
-		<!-- End of Footer -->
+	</div>
+	<!-- End of Main Content -->
+	</div>
+	<!-- End of Content Wrapper -->
 
-		<!-- Scroll to Top Button-->
-		<a class="scroll-to-top rounded" href="#page-top">
-			<i class="fas fa-angle-up"></i>
-		</a>
+	<!-- Footer -->
+	<!-- <?php $this->load->view("footer.php") ?> -->
+	<!-- End of Footer -->
 
-		<?php $this->load->view("jsload.php") ?>
+	<!-- Scroll to Top Button-->
+	<a class="scroll-to-top rounded" href="#page-top">
+		<i class="fas fa-angle-up"></i>
+	</a>
+
+	<?php $this->load->view("jsload.php") ?>
 
 </body>
 

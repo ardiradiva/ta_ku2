@@ -62,7 +62,7 @@
 						</div>
 						<div class="card-body">
 
-							<form action="<?=base_url('nilai/MenambahNilai')?>" method="post" enctype="multipart/form-data">
+							<form action="<?= base_url('nilai/MenambahNilai') ?>" method="post" enctype="multipart/form-data">
 								<!-- Note: atribut action dikosongkan, artinya action-nya akan diproses 
 							oleh controller tempat vuew ini digunakan. Yakni index.php/nilai/edit/ID --->
 
@@ -70,26 +70,26 @@
 								<input type="hidden" name="id_supplier" value="<?php echo $nilai->id_supplier ?>" /> -->
 								<input type="hidden" name="id_users" value="<?php echo $this->session->userdata('id_users'); ?>" />
 
-                                <div class="form-group">
-                                <b><label for="select_sup">Supplier</label></b>
+								<div class="form-group">
+									<b><label for="select_sup">Supplier</label></b>
 
-                                <select id="select_sup" class="js-example-basic-single" name="id_supplier" style="width: 100%;" onchange="RubahSup()" >
-                                <option value="" disabled hidden selected>Pilih Supplier</option>
-                                <?php foreach($supplier as $sp): ?>
-                                        <option value="<?=$sp['id_supplier']?>"><?=$sp['nama']?></option>
-                                        <?php endforeach ?>
-                                        </select>
-                                                                        </div>
+									<select id="select_sup" class="js-example-basic-single" name="id_supplier" style="width: 100%;" onchange="RubahSup()">
+										<option value="" disabled hidden selected>Pilih Supplier</option>
+										<?php foreach ($supplier as $sp) : ?>
+											<option value="<?= $sp['id_supplier'] ?>"><?= $sp['nama'] ?></option>
+										<?php endforeach ?>
+									</select>
+								</div>
 								<div class="form-group">
 									<b><label for="tahun">Tahun</label></b>
 
-									<select class="form-control " name="tahun">
-										<option>---Pilih Tahun---</option>
+									<select id="select_year" class="form-control " name="tahun" onchange="RubahTahun()">
+										<option disabled selected>---Pilih Tahun---</option>
 										<?php
-										for ($i = 2021; $i <= 2030; $i++) {
-											echo "<option value='$i'>$i</option>";
-										
-										}
+										// for ($i = 2021; $i <= 2030; $i++) {
+										// 	echo "<option  value='$i'>$i</option>";
+										// }
+										// 
 										?>
 
 									</select>
@@ -98,10 +98,10 @@
 								</div>
 								<div class="form-group">
 									<b><label for="periode">Periode</label></b>
-									<select class="form-control " name="periode">
+									<select id="select_periode" class="form-control " name="periode">
 										<option>---Pilih Periode---</option>
-										<option value="1">1</option>
-										<option value="2">2</option>
+										<!-- <option value="1">1</option>
+										<option value="2">2</option> -->
 
 									</select>
 									<div class="invalid-feedback"></div>
@@ -166,7 +166,7 @@
 								</div>-->
 									<select name="aksesibilitas" class="form-control">
 										<option>--- Pilih Nilai Kriteria Aksesibilitas ---</option>
-										<option value="1" >Pengiriman hanya dapat dilakukan menggunakan roda 2</option>
+										<option value="1">Pengiriman hanya dapat dilakukan menggunakan roda 2</option>
 										<option value="2">Pengiriman dapat dilakukan menggunakan roda 4</option>
 										<option value="3">Pengiriman hanya dapat dilakukan menggunakan ekspedisi darat</option>
 										<option value="4">Pengiriman dapat dilakukan menggunakan ekspedisi hanya dengan 2 moda transportasi (darat, laut, udara)</option>
@@ -344,54 +344,90 @@
 							* required fields
 						</div>
 
-							</div>
-						</div>
 					</div>
-
 				</div>
-				<!-- /.container-fluid -->
-
 			</div>
-			<!-- End of Main Content -->
+
 		</div>
-		<!-- End of Content Wrapper -->
+		<!-- /.container-fluid -->
 
-		<!-- Footer -->
-		<!-- <?php $this->load->view("footer.php") ?> -->
-		<!-- End of Footer -->
+	</div>
+	<!-- End of Main Content -->
+	</div>
+	<!-- End of Content Wrapper -->
 
-		<!-- Scroll to Top Button-->
-		<a class="scroll-to-top rounded" href="#page-top">
-			<i class="fas fa-angle-up"></i>
-		</a>
+	<!-- Footer -->
+	<!-- <?php $this->load->view("footer.php") ?> -->
+	<!-- End of Footer -->
 
-		<?php $this->load->view("jsload.php") ?>
+	<!-- Scroll to Top Button-->
+	<a class="scroll-to-top rounded" href="#page-top">
+		<i class="fas fa-angle-up"></i>
+	</a>
+
+	<?php $this->load->view("jsload.php") ?>
 
 </body>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
 <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 <script>
-    $(document).ready(function() {
-    $('.js-example-basic-single').select2();
-});
+	$(document).ready(function() {
+		$('.js-example-basic-single').select2();
+	});
 </script>
 
 </html>
 <script>
-function RubahSup(){
-    let id_sup = $('#select_sup').val();
-    console.log(id_sup);
-    $.ajax({
-            url: "<?php echo base_url('Nilai/getData') ?>",
-            type: "POST",
-            data:{
-                'id_sup':id_sup
-            },
-            dataType: "JSON",
-            success: function(data) {
-                console.log(data);
-            }
-        });
-}
+	function RubahTahun() {
+		let id_sup = $('#select_sup').val();
+		let tahun = $('#select_year').val();
+		$('#select_periode').html('<option value="" disabled selected >Pilih Opsi</option>')
+		$.ajax({
+			url: "<?php echo base_url('Nilai/getData') ?>",
+			type: "POST",
+			data: {
+				'id_sup': id_sup
+			},
+			dataType: "JSON",
+			success: function(data) {
+				let nilai = []
+				$.each(data, function(i, dt) {
+					if (parseInt(dt.tahun) == parseInt(tahun)) {
+						nilai.push(parseInt(dt.periode))
+					}
+				});
+				// console.log(nilai);
+				let checker = [];
+				for (let first = 1; first <= 2; first++) {
+
+					if (nilai.includes(first)) {
+						checker.push(first)
+						$('#select_periode').append('<option disabled style="color:red" value="' + first + '">' + first + '</option>')
+					} else {
+						$('#select_periode').append('<option value="' + first + '">' + first + '</option>')
+
+					}
+				}
+				if (checker.length == 2) {
+					$('#select_year').val('')
+					alert('Tahun Tersebut Sudah Diisi Masing - Masing Periode')
+				}
+			}
+
+		});
+
+
+
+	}
+
+	function RubahSup() {
+		for (let i = 2021; i <= 2030; i++) {
+			$('#select_year').append('<option value="' + i + '" >' + i + '</option>')
+
+		}
+		$('#select_year').val('')
+		$('#select_periode').html('<option value="" disabled selected >Pilih Opsi</option>')
+
+	}
 </script>
