@@ -325,10 +325,10 @@ class Nilai extends CI_Controller
 
 
         );
-        var_dump($data_update);
-        die;
+        // var_dump($data_update);
+        // die;
         $this->nilai_model->Tambah_data($data_update, 'nilai');
-        redirect(site_url('nilai/TambahNilai'));
+        redirect(site_url('nilai'));
     }
     public function getData()
     {
