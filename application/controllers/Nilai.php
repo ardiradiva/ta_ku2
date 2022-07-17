@@ -7,6 +7,15 @@ class Nilai extends CI_Controller
     public function __construct()
     {
         parent::__construct();
+        if($this->session->userdata('level') != $this->input->post('username')){
+            $this->session->set_flashdata('pesan','<div class="alert alert-danger alert-dismissible fade show" role="alert">
+                <strong>Maaf!</strong><br> Anda Harus Login Dulu
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+                </button>
+                </div>');
+            redirect('login');
+        }
         $this->load->model("nilai_model");
         $this->load->model("supplier_model");
         $this->load->model("bobot_model");
@@ -17,98 +26,32 @@ class Nilai extends CI_Controller
 
     public function index()
     {
-        //konfigurasi pagination
-        $config['base_url'] = site_url('nilai/index'); //site url
-        $config['total_rows'] = $this->db->count_all('nilai'); //total row
-        $config['per_page'] = 5;  //show record per halaman
-        $config["uri_segment"] = 3;  // uri parameter
-        $choice = $config["total_rows"] / $config["per_page"];
-        $config["num_links"] = floor($choice);
+        $this->load->view('nilai/list');
+    }
 
-        // Membuat Style pagination untuk BootStrap v4
-        $config['first_link']       = 'First';
-        $config['last_link']        = 'Last';
-        $config['next_link']        = 'Next';
-        $config['prev_link']        = 'Prev';
-        $config['full_tag_open']    = '<div class="pagging text-center"><nav><ul class="pagination justify-content-center">';
-        $config['full_tag_close']   = '</ul></nav></div>';
-        $config['num_tag_open']     = '<li class="page-item"><span class="page-link">';
-        $config['num_tag_close']    = '</span></li>';
-        $config['cur_tag_open']     = '<li class="page-item active"><span class="page-link">';
-        $config['cur_tag_close']    = '<span class="sr-only">(current)</span></span></li>';
-        $config['next_tag_open']    = '<li class="page-item"><span class="page-link">';
-        $config['next_tagl_close']  = '<span aria-hidden="true">&raquo;</span></span></li>';
-        $config['prev_tag_open']    = '<li class="page-item"><span class="page-link">';
-        $config['prev_tagl_close']  = '</span>Next</li>';
-        $config['first_tag_open']   = '<li class="page-item"><span class="page-link">';
-        $config['first_tagl_close'] = '</span></li>';
-        $config['last_tag_open']    = '<li class="page-item"><span class="page-link">';
-        $config['last_tagl_close']  = '</span></li>';
-
-        $this->pagination->initialize($config);
-        $data['page'] = ($this->uri->segment(3)) ? $this->uri->segment(3) : 0;
-        $data['nilai_supplier'] = $this->nilai_model->get_nilai_list($config["per_page"], $data['page']);
+    public function load_awal()
+    {
+        $where = [];
+        $data['nilai_supplier'] = $this->nilai_model->get_nilai_list($where);
         $data["bobot"] = $this->bobot_model->getAll();
-        $data['pagination'] = $this->pagination->create_links();
-        $this->load->view('nilai/list', $data);
-        /*
-        $data["nilai"] = $this->nilai_model->getAll();
-		$data["supplier"] = $this->supplier_model->getAll();
-		$data["bobot"] = $this->bobot_model->getAll();
-		$data['nilai_supplier'] = $this->supplier_model->join2table()->result(); 
-        $this->load->view("nilai/list", $data);
-		*/
+
+        $this->load->view('nilai/filter_nilai_list', $data);
     }
 
     public function filter()
     {
         $tahun = $this->input->post('tahun');
         $periode = $this->input->post('periode');
+
         $where = array(
             'tahun' => $tahun,
             'periode' => $periode
         );
-        //konfigurasi pagination
-        $config['base_url'] = site_url('nilai/filter'); //site url
-        $config['total_rows'] = $this->db->get_where('nilai', $where)->num_rows(); //total row
-        $config['per_page'] = 5;  //show record per halaman
-        $config["uri_segment"] = 3;  // uri parameter
-        $choice = $config["total_rows"] / $config["per_page"];
-        $config["num_links"] = floor($choice);
 
-        // Membuat Style pagination untuk BootStrap v4
-        $config['first_link']       = 'First';
-        $config['last_link']        = 'Last';
-        $config['next_link']        = 'Next';
-        $config['prev_link']        = 'Prev';
-        $config['full_tag_open']    = '<div class="pagging text-center"><nav><ul class="pagination justify-content-center">';
-        $config['full_tag_close']   = '</ul></nav></div>';
-        $config['num_tag_open']     = '<li class="page-item"><span class="page-link">';
-        $config['num_tag_close']    = '</span></li>';
-        $config['cur_tag_open']     = '<li class="page-item active"><span class="page-link">';
-        $config['cur_tag_close']    = '<span class="sr-only">(current)</span></span></li>';
-        $config['next_tag_open']    = '<li class="page-item"><span class="page-link">';
-        $config['next_tagl_close']  = '<span aria-hidden="true">&raquo;</span></span></li>';
-        $config['prev_tag_open']    = '<li class="page-item"><span class="page-link">';
-        $config['prev_tagl_close']  = '</span>Next</li>';
-        $config['first_tag_open']   = '<li class="page-item"><span class="page-link">';
-        $config['first_tagl_close'] = '</span></li>';
-        $config['last_tag_open']    = '<li class="page-item"><span class="page-link">';
-        $config['last_tagl_close']  = '</span></li>';
-
-        $this->pagination->initialize($config);
-        $data['page'] = ($this->uri->segment(3)) ? $this->uri->segment(3) : 0;
-        $data['nilai_supplier'] = $this->nilai_model->get_nilai_list($config["per_page"], $data['page'], $tahun, $periode);
+        $data['nilai_supplier'] = $this->nilai_model->get_nilai_list($where);
         $data["bobot"] = $this->bobot_model->getAll();
-        $data['pagination'] = $this->pagination->create_links();
-        $this->load->view('nilai/list', $data);
-        /*
-        $data["nilai"] = $this->nilai_model->getAll();
-		$data["supplier"] = $this->supplier_model->getAll();
-		$data["bobot"] = $this->bobot_model->getAll();
-		$data['nilai_supplier'] = $this->supplier_model->join2table()->result(); 
-        $this->load->view("nilai/list", $data);
-		*/
+
+        $this->load->view('nilai/filter_nilai_list', $data);
     }
 
     public function add()
@@ -220,9 +163,7 @@ class Nilai extends CI_Controller
                 'komunikasi' => $this->input->post('komunikasi'),
                 'id_supplier' => $data->id_supplier,
                 'id_users' => $this->session->userdata('id_users'),
-                'status' => 1
-
-
+                // 'status' => 1
 
             );
             $this->nilai_model->Tambah_data($data_update, 'nilai');
@@ -244,9 +185,7 @@ class Nilai extends CI_Controller
                 'komunikasi' => $this->input->post('komunikasi'),
                 'id_supplier' => $data->id_supplier,
                 'id_users' => $this->session->userdata('id_users'),
-                'status' => 1
-
-
+                // 'status' => 1
 
             );
             $where = array(
@@ -320,9 +259,7 @@ class Nilai extends CI_Controller
             'komunikasi' => $this->input->post('komunikasi'),
             'id_supplier' => $this->input->post('id_supplier'),
             'id_users' => $this->session->userdata('id_users'),
-            'status' => 1
-
-
+            // 'status' => 1
 
         );
         // var_dump($data_update);

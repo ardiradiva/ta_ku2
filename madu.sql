@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Waktu pembuatan: 26 Jun 2022 pada 08.36
+-- Waktu pembuatan: 02 Jul 2022 pada 20.07
 -- Versi server: 10.4.19-MariaDB
 -- Versi PHP: 7.4.20
 
@@ -71,7 +71,7 @@ CREATE TABLE `bobot` (
 --
 
 INSERT INTO `bobot` (`id_bobot`, `id_admin`, `rasa`, `aroma`, `warna`, `aksesibilitas`, `packaging`, `konsistensi`, `harga`, `fleksibilitas`, `garansi`, `jarak`, `lokasi`, `legalitas`, `manajerial`, `komunikasi`) VALUES
-('BT00001', 'ADM00001', 5, 4, 4, 3, 4, 4, 5, 4, 4, 5, 4, 5, 3, 5);
+('BT00001', 'ADM00001', 5, 4, 4, 3, 4, 4, 5, 4, 4, 5, 4, 5, 3, 4);
 
 -- --------------------------------------------------------
 
@@ -107,7 +107,8 @@ CREATE TABLE `nilai` (
 --
 
 INSERT INTO `nilai` (`id_nilai`, `id_supplier`, `id_users`, `tahun`, `periode`, `status`, `rasa`, `aroma`, `warna`, `aksesibilitas`, `packaging`, `konsistensi`, `harga`, `fleksibilitas`, `garansi`, `jarak`, `lokasi`, `legalitas`, `manajerial`, `komunikasi`) VALUES
-('NI000001', 'SP000001', NULL, 2022, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
+('NI000001', 'SP000004', 'US000001', 2022, 1, 1, 3, 2, 3, 3, 4, 3, 4, 2, 3, 3, 4, 3, 3, 4),
+('NI000002', 'SP000004', 'US000001', 2022, 2, 1, 2, 4, 3, 3, 2, 3, 3, 2, 4, 5, 3, 2, 4, 4);
 
 -- --------------------------------------------------------
 
@@ -128,7 +129,10 @@ CREATE TABLE `supplier` (
 --
 
 INSERT INTO `supplier` (`id_supplier`, `id_admin`, `nama`, `alamat`, `hp`) VALUES
-('SP000001', 'ADM00001', 'CV Supplier A', 'Mojo, Kediri', '0813445678088');
+('SP000001', 'ADM00001', 'CV Supplier A', 'Kediri', '0813445678099'),
+('SP000002', 'ADM00001', 'CV Supplier B', 'Mojo, Kediri', '0813445678099'),
+('SP000003', 'ADM00001', 'CV Supplier C', 'Sidoarjo', '0813445678087'),
+('SP000004', 'ADM00001', 'CV Supplier D', 'Mojo, Kediri', '0813445678099');
 
 -- --------------------------------------------------------
 
@@ -148,8 +152,7 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`id_users`, `nama`, `username`, `password`) VALUES
-('US000001', 'Ardira Diva ', 'user1', '24c9e15e52afc47c225b757e7bee1f9d'),
-('US000002', 'Rayka Azahra', 'user2', '7e58d63b60197ceb55a1c487989a3720');
+('US000001', 'Ardira Diva ', 'user1', '24c9e15e52afc47c225b757e7bee1f9d');
 
 --
 -- Indexes for dumped tables
@@ -207,6 +210,12 @@ ALTER TABLE `bobot`
 ALTER TABLE `nilai`
   ADD CONSTRAINT `nilai_ibfk_2` FOREIGN KEY (`id_users`) REFERENCES `users` (`id_users`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `nilai_ibfk_3` FOREIGN KEY (`id_supplier`) REFERENCES `supplier` (`id_supplier`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Ketidakleluasaan untuk tabel `supplier`
+--
+ALTER TABLE `supplier`
+  ADD CONSTRAINT `supplier_ibfk_1` FOREIGN KEY (`id_admin`) REFERENCES `admin` (`id_admin`) ON DELETE CASCADE ON UPDATE CASCADE;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

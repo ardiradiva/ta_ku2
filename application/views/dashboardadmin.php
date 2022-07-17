@@ -42,7 +42,7 @@
 
                     <!-- Page Heading -->
                     <div class="d-sm-flex align-items-center justify-content-between mb-4">
-                        <h2 class="m-0 font-weight-bold text-primary">Dashboard</h2>
+                        <h2 class="m-0 font-weight-bold text-primary">Beranda</h2>
                     </div>
 
                     <!-- Content Row -->
@@ -129,11 +129,8 @@
                             </div>
                         </div>
                     </div>
-
-
                 </div>
                 <!-- /.container-fluid -->
-
             </div>
             <!-- End of Main Content -->
 
@@ -151,11 +148,7 @@
     <a class="scroll-to-top rounded" href="#page-top">
         <i class="fas fa-angle-up"></i>
     </a>
-
-
-
+    
     <?php $this->load->view("jsload.php") ?>
-
 </body>
-
 </html>

@@ -146,17 +146,13 @@ class Nilai_model extends CI_Model
     {
         return $this->db->insert($table, $data);
     }
-    function get_nilai_list($limit, $start, $tahun = null, $periode = null)
+    function get_nilai_list($where)
     {
         $this->db->select('*');
         $this->db->from('supplier');
-        $this->db->join('nilai', 'nilai.id_supplier = supplier.id_supplier', 'inner');
-        $this->db->limit($limit, $start);
-        if ($tahun) {
-            $this->db->where('tahun', $tahun);
-        }
-        if ($periode) {
-            $this->db->where('periode', $periode);
+        $this->db->join('nilai', 'nilai.id_supplier = supplier.id_supplier');
+        if($where != null){
+            $this->db->where($where);
         }
         return $this->db->get()->result();
     }
@@ -172,7 +168,7 @@ class Nilai_model extends CI_Model
     {
         $post = $this->input->post();
         //$this->nilai = $this->db->from("nilai")->count_all_results()+1;
-        $this->id_nilai = mt_rand(1000, 9999);
+        // $this->id_nilai = mt_rand(1000, 9999);
         $this->id_supplier = $post["id_supplier"];
         $this->id_users = $post["id_users"];
         $this->tahun = $post["tahun"];

@@ -23,6 +23,13 @@
     <title>Cetak Laporan Hasil Rekomendasi</title>
 </head><body>
     <div align="center" style="margin-bottom: 10px;">
+        <?php
+            $path = base_url("assets/img/logoku.jpg");
+            $type = pathinfo($path, PATHINFO_EXTENSION);
+            $data = file_get_contents($path);
+            $base64 = 'data:image/' . $type . ';base64,' . base64_encode($data);
+        ?>
+        <img src="<?php echo $base64?>" width="150" height="150" style="position: absolute; top: 5px; object-fit: cover;">
         <h2>PENGEPUL MADU HUTAN</h2>
         <h2 style="margin-top: 0px; margin-bottom: 0px;">SUPLIER MADU BUDIDAYA</h2>
         <h2 style="margin-top: 0px; margin-bottom: 0px;">PRODUSEN MADU HERBAL</h2>
@@ -31,6 +38,7 @@
         <span>Kabupaten Sidoarjo, Jawa Timur 61256</span>
     </div>
     <br>
+    <p></p>
     <div style="width: 100%; background-color: black; height: 3px;"></div>
     <div style="width: 100%; background-color: black; height: 1px; margin-top: 1px;"></div>
     <div align="center">
@@ -41,7 +49,7 @@
             <h3>Data Bobot Kriteria</h3>
         </div>
         <div style="margin-top: 10px;">
-            <table width="100%">
+            <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                 <tr style="background-color:#FFD700;">
                     <?php
                     for ($i = 1; $i <= 14; $i++) {
@@ -73,7 +81,7 @@
                     ?>
                 </tr>
                 <tr>
-                    <td style="text-align: center;"><?php echo $b_rasa ?></td>
+                    <td style="text-align:center;"><?php echo $b_rasa ?></td>
                     <td style="text-align: center;"><?php echo $b_aroma ?></td>
                     <td style="text-align: center;"><?php echo $b_warna ?></td>
                     <td style="text-align: center;"><?php echo $b_aksesibilitas ?></td>
@@ -100,7 +108,7 @@
             <h3>Data Alternatif</h3>
         </div>
         <div style="margin-top: 10px;">
-            <table width="100%">
+            <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                 <tr style="background-color:#FFD700;">
                     <?php
                     echo "<th>Nama Supplier</th>";
@@ -145,21 +153,21 @@
                             $alt_komunikasi[] = $ns->komunikasi;
                     ?>
                 <tr>
-                    <td style="text-align: center;"><?php echo $alt_nama[$n_alt] ?></td>
-                    <td style="text-align: center;"><?php echo $alt_rasa[$n_alt] ?></td>
-                    <td style="text-align: center;"><?php echo $alt_aroma[$n_alt] ?></td>
-                    <td style="text-align: center;"><?php echo $alt_warna[$n_alt] ?></td>
-                    <td style="text-align: center;"><?php echo $alt_aksesibilitas[$n_alt] ?></td>
-                    <td style="text-align: center;"><?php echo $alt_packaging[$n_alt] ?></td>
-                    <td style="text-align: center;"><?php echo $alt_konsistensi[$n_alt] ?></td>
-                    <td style="text-align: center;"><?php echo $alt_harga[$n_alt] ?></td>
-                    <td style="text-align: center;"><?php echo $alt_fleksibilitas[$n_alt] ?></td>
-                    <td style="text-align: center;"><?php echo $alt_garansi[$n_alt] ?></td>
-                    <td style="text-align: center;"><?php echo $alt_jarak[$n_alt] ?></td>
-                    <td style="text-align: center;"><?php echo $alt_lokasi[$n_alt] ?></td>
-                    <td style="text-align: center;"><?php echo $alt_legalitas[$n_alt] ?></td>
-                    <td style="text-align: center;"><?php echo $alt_manajerial[$n_alt] ?></td>
-                    <td style="text-align: center;"><?php echo $alt_komunikasi[$n_alt] ?></td>
+                      <td style="text-align:center" width="100"><?php echo $alt_nama[$n_alt] ?></td>
+                      <td style="text-align:center" width="30"><?php echo $alt_rasa[$n_alt] ?></td>
+                      <td style="text-align:center" width="30"><?php echo $alt_aroma[$n_alt] ?></td>
+                      <td style="text-align:center" width="30"><?php echo $alt_warna[$n_alt] ?></td>
+                      <td style="text-align:center" width="30"><?php echo $alt_aksesibilitas[$n_alt] ?></td>
+                      <td style="text-align:center" width="30"><?php echo $alt_packaging[$n_alt] ?></td>
+                      <td style="text-align:center" width="30"><?php echo $alt_konsistensi[$n_alt] ?></td>
+                      <td style="text-align:center" width="30"><?php echo $alt_harga[$n_alt] ?></td>
+                      <td style="text-align:center" width="30"><?php echo $alt_fleksibilitas[$n_alt] ?></td>
+                      <td style="text-align:center" width="30"><?php echo $alt_garansi[$n_alt] ?></td>
+                      <td style="text-align:center" width="30"><?php echo $alt_jarak[$n_alt] ?></td>
+                      <td style="text-align:center" width="30"><?php echo $alt_lokasi[$n_alt] ?></td>
+                      <td style="text-align:center" width="30"><?php echo $alt_legalitas[$n_alt] ?></td>
+                      <td style="text-align:center" width="30"><?php echo $alt_manajerial[$n_alt] ?></td>
+                      <td style="text-align:center" width="30"><?php echo $alt_komunikasi[$n_alt] ?></td>
                 </tr>
                     <?php $n_alt++;
                     }
@@ -169,22 +177,23 @@
     </div>
     <?php
         foreach ($bobot as $bobot) :
-            $norm_rasa = round($b_rasa / $sum_bobot, 4);
-            $norm_aroma = round($b_aroma / $sum_bobot, 4);
-            $norm_warna = round($b_warna / $sum_bobot, 4);
-            $norm_aksesibilitas = round($b_aksesibilitas / $sum_bobot, 4);
-            $norm_packaging = round($b_packaging / $sum_bobot, 4);
-            $norm_konsistensi = round($b_konsistensi / $sum_bobot, 4);
-            $norm_harga = round($b_harga / $sum_bobot, 4);
-            $norm_fleksibilitas = round($b_fleksibilitas / $sum_bobot, 4);
-            $norm_garansi = round($b_garansi / $sum_bobot, 4);
-            $norm_jarak = round($b_jarak / $sum_bobot, 4);
-            $norm_lokasi = round($b_lokasi / $sum_bobot, 4);
-            $norm_legalitas = round($b_legalitas / $sum_bobot, 4);
-            $norm_manajerial = round($b_manajerial / $sum_bobot, 4);
-            $norm_komunikasi = round($b_komunikasi / $sum_bobot, 4);
-        endforeach; 
-    ?>
+
+            $norm_rasa = round($b_rasa / $sum_bobot, 3);
+            $norm_aroma = round($b_aroma / $sum_bobot, 3);
+            $norm_warna = round($b_warna / $sum_bobot, 3);
+            $norm_aksesibilitas = round($b_aksesibilitas / $sum_bobot, 3);
+            $norm_packaging = round($b_packaging / $sum_bobot, 3);
+            $norm_konsistensi = round($b_konsistensi / $sum_bobot, 3);
+            $norm_harga = round($b_harga / $sum_bobot, 3);
+            $norm_fleksibilitas = round($b_fleksibilitas / $sum_bobot, 3);
+            $norm_garansi = round($b_garansi / $sum_bobot, 3);
+            $norm_jarak = round($b_jarak / $sum_bobot, 3);
+            $norm_lokasi = round($b_lokasi / $sum_bobot, 3);
+            $norm_legalitas = round($b_legalitas / $sum_bobot, 3);
+            $norm_manajerial = round($b_manajerial / $sum_bobot, 3);
+            $norm_komunikasi = round($b_komunikasi / $sum_bobot, 3);
+
+        endforeach; ?>
     <div>
         <div>
             <h3>Normalisasi Bobot (Wj)</h3>
@@ -201,21 +210,21 @@
                     ?>
                 </tr>
                 <tr>
-                    <td style="text-align: center;"><?php echo $norm_rasa ?></td>
-                    <td style="text-align: center;"><?php echo $norm_aroma ?></td>
-                    <td style="text-align: center;"><?php echo $norm_warna ?></td>
-                    <td style="text-align: center;"><?php echo $norm_aksesibilitas ?></td>
-                    <td style="text-align: center;"><?php echo $norm_packaging ?></td>
-                    <td style="text-align: center;"><?php echo $norm_konsistensi ?></td>
-                    <td style="text-align: center;"><?php echo $norm_harga ?></td>
-                    <td style="text-align: center;"><?php echo $norm_fleksibilitas ?></td>
-                    <td style="text-align: center;"><?php echo $norm_garansi ?></td>
-                    <td style="text-align: center;"><?php echo $norm_jarak ?></td>
-                    <td style="text-align: center;"><?php echo $norm_lokasi ?></td>
-                    <td style="text-align: center;"><?php echo $norm_legalitas ?></td>
-                    <td style="text-align: center;"><?php echo $norm_manajerial ?></td>
-                    <td style="text-align: center;"><?php echo $norm_komunikasi ?></td>
-                </tr>
+					<td><?php echo number_format($norm_rasa,4) ?></td>
+					<td><?php echo number_format($norm_aroma,4) ?></td>
+					<td><?php echo number_format($norm_warna,4) ?></td>
+					<td><?php echo number_format($norm_aksesibilitas,4) ?></td>
+					<td><?php echo number_format($norm_packaging,4) ?></td>
+					<td><?php echo number_format($norm_konsistensi,4) ?></td>
+					<td><?php echo number_format($norm_harga,4) ?></td>
+					<td><?php echo number_format($norm_fleksibilitas,4) ?></td>
+				    <td><?php echo number_format($norm_garansi,4) ?></td>
+					<td><?php echo number_format($norm_jarak,4) ?></td>
+					<td><?php echo number_format($norm_lokasi,4) ?></td>
+					<td><?php echo number_format($norm_legalitas,4) ?></td>
+					<td><?php echo number_format($norm_manajerial,4) ?></td>
+					<td><?php echo number_format($norm_komunikasi,4) ?></td>
+				</tr>
             </table>
         </div>
     </div>
@@ -224,8 +233,8 @@
             <h3>Perhitungan Vektor S</h3>
         </div>
         <div style="margin-top: 10px;">
-            <table width="100%">
-				<tr>
+            <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                <tr style="background-color:#FFD700;">
 					<?php
                         $total_s = 0;
                         echo "<th>Nama Supplier</th>";
@@ -235,7 +244,7 @@
                         echo "<th>Vektor S</th>";
                     ?>
                 </tr>
-					<?php
+					    <?php
                         $s_rasa = array();
                         $s_aroma = array();
                         $s_warna = array();
@@ -254,46 +263,52 @@
                         $sum_s = array();
 
                         for ($i = 0; $i < $n_alt; $i++) {
-                            $s_rasa[] = round(pow($alt_rasa[$n_s], $norm_rasa), 4);
-                            $s_aroma[] = round(pow($alt_aroma[$n_s], $norm_aroma), 4);
-                            $s_warna[] = round(pow($alt_warna[$n_s], $norm_warna), 4);
-                            $s_aksesibilitas[] = round(pow($alt_aksesibilitas[$n_s], $norm_aksesibilitas), 4);
-                            $s_packaging[] = round(pow($alt_packaging[$n_s], $norm_packaging), 4);
-                            $s_konsistensi[] = round(pow($alt_konsistensi[$n_s], $norm_konsistensi), 4);
-                            $s_harga[] = round(pow($alt_harga[$n_s], $norm_harga * (-1)), 4);
-                            $s_fleksibilitas[] = round(pow($alt_fleksibilitas[$n_s], $norm_fleksibilitas), 4);
-                            $s_garansi[] = round(pow($alt_garansi[$n_s], $norm_garansi), 4);
-                            $s_jarak[] = round(pow($alt_jarak[$n_s], $norm_jarak * (-1)), 4);
-                            $s_lokasi[] = round(pow($alt_lokasi[$n_s], $norm_lokasi), 4);
-                            $s_legalitas[] = round(pow($alt_legalitas[$n_s], $norm_legalitas), 4);
-                            $s_manajerial[] = round(pow($alt_manajerial[$n_s], $norm_manajerial), 4);
-                            $s_komunikasi[] = round(pow($alt_komunikasi[$n_s], $norm_komunikasi), 4);
+                            $s_rasa[] = round(pow($alt_rasa[$n_s], $norm_rasa), 3);
+                            $s_aroma[] = round(pow($alt_aroma[$n_s], $norm_aroma), 3);
+                            $s_warna[] = round(pow($alt_warna[$n_s], $norm_warna), 3);
+                            $s_aksesibilitas[] = round(pow($alt_aksesibilitas[$n_s], $norm_aksesibilitas), 3);
+                            $s_packaging[] = round(pow($alt_packaging[$n_s], $norm_packaging), 3);
+                            $s_konsistensi[] = round(pow($alt_konsistensi[$n_s], $norm_konsistensi), 3);
+                            $s_harga[] = round(pow($alt_harga[$n_s], $norm_harga * (-1)), 3);
+                            $s_fleksibilitas[] = round(pow($alt_fleksibilitas[$n_s], $norm_fleksibilitas), 3);
+                            $s_garansi[] = round(pow($alt_garansi[$n_s], $norm_garansi), 3);
+                            $s_jarak[] = round(pow($alt_jarak[$n_s], $norm_jarak * (-1)), 3);
+                            $s_lokasi[] = round(pow($alt_lokasi[$n_s], $norm_lokasi), 3);
+                            $s_legalitas[] = round(pow($alt_legalitas[$n_s], $norm_legalitas), 3);
+                            $s_manajerial[] = round(pow($alt_manajerial[$n_s], $norm_manajerial), 3);
+                            $s_komunikasi[] = round(pow($alt_komunikasi[$n_s], $norm_komunikasi), 3);
 
-                            $sum_s[$n_s] = round(pow($alt_rasa[$n_s], $norm_rasa) * pow($alt_aroma[$n_s], $norm_aroma) * pow($alt_warna[$n_s], $norm_warna) * pow($alt_aksesibilitas[$n_s], $norm_aksesibilitas) * pow($alt_packaging[$n_s], $norm_packaging) * pow($alt_konsistensi[$n_s], $norm_konsistensi) * pow($alt_harga[$n_s], $norm_harga * (-1)) * pow($alt_fleksibilitas[$n_s], $norm_fleksibilitas) * pow($alt_garansi[$n_s], $norm_garansi) * pow($alt_jarak[$n_s], $norm_jarak * (-1)) * pow($alt_lokasi[$n_s], $norm_lokasi) * pow($alt_legalitas[$n_s], $norm_legalitas) * pow($alt_manajerial[$n_s], $norm_manajerial) * pow($alt_komunikasi[$n_s], $norm_komunikasi), 4);
+                            $sum_s[$n_s] = round(pow($alt_rasa[$n_s], $norm_rasa),3) * round(pow($alt_aroma[$n_s], $norm_aroma),3) 
+                            * round(pow($alt_warna[$n_s], $norm_warna),3) * round(pow($alt_aksesibilitas[$n_s], $norm_aksesibilitas),3) 
+                            * round(pow($alt_packaging[$n_s], $norm_packaging),3) * round(pow($alt_konsistensi[$n_s], $norm_konsistensi),3) 
+                            * round(pow($alt_harga[$n_s], $norm_harga * (-1)),3) * round(pow($alt_fleksibilitas[$n_s], $norm_fleksibilitas),3) 
+                            * round(pow($alt_garansi[$n_s], $norm_garansi),3) * round(pow($alt_jarak[$n_s], $norm_jarak * (-1)),3) 
+                            * round(pow($alt_lokasi[$n_s], $norm_lokasi),3) * round(pow($alt_legalitas[$n_s], $norm_legalitas),3) 
+                            * round(pow($alt_manajerial[$n_s], $norm_manajerial),3) * round(pow($alt_komunikasi[$n_s], $norm_komunikasi),3);
                             $total_s += $sum_s[$n_s];
-                    ?>
-                <tr>
-                    <td style="text-align: center:"><?php echo $alt_nama[$n_s] ?></td>
-                    <td style="text-align: center;"><?php echo $s_rasa[$n_s] ?></td>
-                    <td style="text-align: center;"><?php echo $s_aroma[$n_s] ?></td>
-                    <td style="text-align: center;"><?php echo $s_warna[$n_s] ?></td>
-                    <td style="text-align: center;"><?php echo $s_aksesibilitas[$n_s] ?></td>
-                    <td style="text-align: center;"><?php echo $s_packaging[$n_s] ?></td>
-                    <td style="text-align: center;"><?php echo $s_konsistensi[$n_s] ?></td>
-                    <td style="text-align: center;"><?php echo $s_harga[$n_s] ?></td>
-                    <td style="text-align: center;"><?php echo $s_fleksibilitas[$n_s] ?></td>
-                    <td style="text-align: center;"><?php echo $s_garansi[$n_s] ?></td>
-                    <td style="text-align: center;"><?php echo $s_jarak[$n_s] ?></td>
-                    <td style="text-align: center;"><?php echo $s_lokasi[$n_s] ?></td>
-                    <td style="text-align: center;"><?php echo $s_legalitas[$n_s] ?></td>
-                    <td style="text-align: center;"><?php echo $s_manajerial[$n_s] ?></td>
-                    <td style="text-align: center;"><?php echo $s_komunikasi[$n_s] ?></td>
-                    <td style="text-align: center;"><?php echo $sum_s[$n_s] ?></td>
-                </tr>
-                    <?php
+                        ?>
+                    <tr>
+                        <td style="text-align:center" width="40"><?php echo $alt_nama[$n_s] ?></td>
+                        <td style="text-align:center" width="40"><?php echo number_format($s_rasa[$n_s],4) ?></td>
+                        <td style="text-align:center" width="40"><?php echo number_format($s_aroma[$n_s] ,4)?></td>
+                        <td style="text-align:center" width="40"><?php echo number_format($s_warna[$n_s],4) ?></td>
+                        <td style="text-align:center" width="40"><?php echo number_format($s_aksesibilitas[$n_s],4) ?></td>
+                        <td style="text-align:center" width="40"><?php echo number_format($s_packaging[$n_s],4) ?></td>
+                        <td style="text-align:center" width="40"><?php echo number_format($s_konsistensi[$n_s],4) ?></td>
+                        <td style="text-align:center" width="40"><?php echo number_format($s_harga[$n_s],4) ?></td>
+                        <td style="text-align:center" width="40"><?php echo number_format($s_fleksibilitas[$n_s],4) ?></td>
+                        <td style="text-align:center" width="40"><?php echo number_format($s_garansi[$n_s],4) ?></td>
+                        <td style="text-align:center" width="40"><?php echo number_format($s_jarak[$n_s],4) ?></td>
+                        <td style="text-align:center" width="40"><?php echo number_format($s_lokasi[$n_s],4)?></td>
+                        <td style="text-align:center" width="40"><?php echo number_format($s_legalitas[$n_s],4) ?></td>
+                        <td style="text-align:center" width="40"><?php echo number_format($s_manajerial[$n_s],4) ?></td>
+                        <td style="text-align:center" width="40"><?php echo number_format($s_komunikasi[$n_s],4)?></td>
+                        <td style="text-align:center" width="40"><?php echo number_format($sum_s[$n_s],4) ?></td>
+                    </tr>
+                <?php
+                            
                         $n_s++;
-                            } ?>
-
+                        } ?>
 	        </table>
         </div>
     </div>
@@ -302,12 +317,11 @@
             <h3>Perhitungan Vektor V</h3>
         </div>
         <div style="margin-top: 10px;">
-            <table width="100%">
+            <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                 <tr>
                     <?php
                         echo "<th>Nama Supplier</th>";
                         echo "<th>Vektor S </th>";
-
                         echo "<th>Vektor V</th>";
                         ?>
                         <?php
@@ -320,9 +334,9 @@
                     ?>
                 </tr>
                 <tr>
-                    <td style="text-align: center;"><?php echo $alt_nama[$n_v] ?></td>
-                    <td style="text-align: center;"><?php echo round($sum_s[$n_v], 4) ?></td>
-                    <td style="text-align: center;"><?php echo round($v[$n_v], 4) ?></td>
+                <td style="text-align:center" width="50"><?php echo $alt_nama[$n_v] ?></td>
+				<td style="text-align:center" width="50"><?php echo number_format(round($sum_s[$n_v], 4),4) ?></td>
+				<td style="text-align:center" width="50"><?php echo number_format(round($v[$n_v], 4),4) ?></td>
                 </tr>
                 <?php
                     $n_v++;
@@ -334,11 +348,15 @@
         </div>
     </div>
     <div>
+        <?php //echo $total_s;
+            $tertinggi=null;
+            $terendah=null;
+        ?>
         <div>
             <h3>Perangkingan Supplier</h3>
         </div>
         <div style="margin-top: 10px;">
-            <table width="100%">
+            <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                 <tr>
                     <?php
                         echo "<th>Rangking</th>";
@@ -347,18 +365,30 @@
                         $v = array();
                         $n_v = 0;
                         for ($i = 0; $i < count($hasil); $i++) {
+                            if($tertinggi==null){
+                                $tertinggi=$hasil[$i]['supplier'];
+                             }
+                                $terendah=$hasil[$i]['supplier'];
                     ?>
                 </tr>
                 <tr>
-                    <td style="text-align: center;"><?php echo ($i + 1); ?></td>
-                    <td style="text-align: center;"><?php echo $hasil[$i]['supplier'] ?></td>
-                    <td style="text-align: center;"><?php echo $hasil[$i]['V'] ?></td>
+                    <td style="text-align:center" width="50"><?php echo ($i + 1); ?></td>
+                    <td style="text-align:center" width="50"><?php echo $hasil[$i]['supplier'] ?></td>
+                    <td style="text-align:center" width="50"><?php echo $hasil[$i]['V'] ?></td>
                 </tr>
                 <?php
                     $n_v++;
                     }
                 ?>
 			</table>
+        </div>
+    </div>
+    <div>
+        <div>
+            <h3>Kesimpulan Hasil</h3>
+        </div>
+        <div style="margin-top: 10px;">
+            Hasil Rekomendasi Supplier Madu Budidaya Pada Tahun <?php echo $ttahun; ?> dan Periode <?php echo $tperiode; ?> Menghasilkan Supplier <?php echo $tertinggi;?> sebagai supplier dengan Nilai Tertinggi dan Supplier  <?php echo $terendah;?> dengan Nilai Terendah
         </div>
     </div>
 </body></html>

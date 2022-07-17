@@ -7,6 +7,15 @@ class Users extends CI_Controller
     public function __construct()
     {
         parent::__construct();
+        if($this->session->userdata('level') != 'admin'){
+            $this->session->set_flashdata('pesan','<div class="alert alert-danger alert-dismissible fade show" role="alert">
+                <strong>Maaf!</strong><br> Anda Harus Login Dulu
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+                </button>
+                </div>');
+            redirect('login');
+        }
         $this->load->model("users_model");
         $this->load->library('session');
         $this->load->library('form_validation');
@@ -31,8 +40,9 @@ class Users extends CI_Controller
         $users = $this->users_model;
         $validation = $this->form_validation;
         $validation->set_rules($users->rules());
-		$validation->set_rules('nama','nama','required|min_length[5]|max_length[25]|is_unique[users.nama]');
-		$validation->set_rules('username','username','required|min_length[5]|max_length[25]|is_unique[users.username]');
+		$validation->set_rules('nama','nama','required|is_unique[users.nama]');
+		$validation->set_rules('username','username','required|is_unique[users.username]');
+        $this->form_validation->set_message('required', '{field} tidak boleh kosong!');
 
         if ($validation->run()) {
             $users->save();
@@ -69,5 +79,26 @@ class Users extends CI_Controller
         if ($this->users_model->delete($id)) {
             redirect(site_url('users'));
         }
+    }
+
+    public function update_data(){
+        if($this->input->post('password') != ''){
+            $data = array(
+                'username' => $this->input->post('username'),
+                'nama' => $this->input->post('nama'),
+                'password' => md5($this->input->post('password')),
+            );
+        }else{
+            $data = array(
+                'username' => $this->input->post('username'),
+                'nama' => $this->input->post('nama'),
+                'password' => $this->input->post('password_lawas'),
+            );
+        }
+        $where = array(
+            'id_users' => $this->input->post('id')
+        );
+        $this->db->update('users', $data, $where);
+        redirect('users');
     }
 }

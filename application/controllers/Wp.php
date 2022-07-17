@@ -6,6 +6,15 @@ class Wp extends CI_Controller
 	function __construct()
 	{
 		parent::__construct();
+		if($this->session->userdata('level') != 'admin'){
+            $this->session->set_flashdata('pesan','<div class="alert alert-danger alert-dismissible fade show" role="alert">
+                <strong>Maaf!</strong><br> Anda Harus Login Dulu
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+                </button>
+                </div>');
+            redirect('login');
+        }
 		$this->load->model("nilai_model");
 		$this->load->model("supplier_model");
 		$this->load->model("bobot_model");
@@ -23,6 +32,7 @@ class Wp extends CI_Controller
 		}
 		*/
 		$data["nilai"] = $this->nilai_model->getAll();
+		
 		$data["bobot"] = $this->bobot_model->getAll();
 		$data['nilai_supplier'] = $this->supplier_model->join2table()->result();
 		$this->load->view('wp', $data);

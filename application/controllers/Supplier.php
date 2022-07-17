@@ -7,6 +7,15 @@ class Supplier extends CI_Controller
     public function __construct()
     {
         parent::__construct();
+        if($this->session->userdata('level') != 'admin'){
+            $this->session->set_flashdata('pesan','<div class="alert alert-danger alert-dismissible fade show" role="alert">
+                <strong>Maaf!</strong><br> Anda Harus Login Dulu
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+                </button>
+                </div>');
+            redirect('login');
+        }
         $this->load->model("supplier_model");
         $this->load->model("nilai_model");
         $this->load->model("bobot_model");
@@ -17,52 +26,11 @@ class Supplier extends CI_Controller
 
     public function index()
     {
-        //konfigurasi pagination
-        $config['base_url'] = site_url('supplier/index'); //site url
-        $config['total_rows'] = $this->db->count_all('supplier'); //total row
-        $config['per_page'] = 5;  //show record per halaman
-        $config["uri_segment"] = 3;  // uri parameter
-        $choice = $config["total_rows"] / $config["per_page"];
-        $config["num_links"] = floor($choice);
-
-        // Membuat Style pagination untuk BootStrap v4
-        $config['first_link']       = 'First';
-        $config['last_link']        = 'Last';
-        $config['next_link']        = 'Next';
-        $config['prev_link']        = 'Prev';
-        $config['full_tag_open']    = '<div class="pagging text-center"><nav><ul class="pagination justify-content-center">';
-        $config['full_tag_close']   = '</ul></nav></div>';
-        $config['num_tag_open']     = '<li class="page-item"><span class="page-link">';
-        $config['num_tag_close']    = '</span></li>';
-        $config['cur_tag_open']     = '<li class="page-item active"><span class="page-link">';
-        $config['cur_tag_close']    = '<span class="sr-only">(current)</span></span></li>';
-        $config['next_tag_open']    = '<li class="page-item"><span class="page-link">';
-        $config['next_tagl_close']  = '<span aria-hidden="true">&raquo;</span></span></li>';
-        $config['prev_tag_open']    = '<li class="page-item"><span class="page-link">';
-        $config['prev_tagl_close']  = '</span>Next</li>';
-        $config['first_tag_open']   = '<li class="page-item"><span class="page-link">';
-        $config['first_tagl_close'] = '</span></li>';
-        $config['last_tag_open']    = '<li class="page-item"><span class="page-link">';
-        $config['last_tagl_close']  = '</span></li>';
-
-        $this->pagination->initialize($config);
-        $data['page'] = ($this->uri->segment(3)) ? $this->uri->segment(3) : 0;
-        $data['pagination'] = $this->pagination->create_links();
-
-        if ($this->input->get('keyword')) {
-            $data['keyword'] = $this->input->get('keyword');
-            /////////
-
-            /////////
-
-            $this->load->model('supplier_model');
-            $data['supplier'] = $this->supplier_model->search($data['keyword']);
-            $this->load->view('supplier/list', $data);
-        } else {
-            $data['supplier'] = $this->supplier_model->get_supplier_list($config["per_page"], $data['page']);
-            $data['nilai_supplier'] = $this->supplier_model->join2table()->result();
-            $this->load->view('supplier/list', $data);
-        }
+        $data["supplier"] = $this->supplier_model->getAll();
+		$data["nilai"] = $this->nilai_model->getAll();
+		$data["bobot"] = $this->bobot_model->getAll();
+		$data['nilai_supplier'] = $this->supplier_model->join2table()->result(); 
+        $this->load->view("supplier/list", $data);
     }
 
     public function add()
@@ -71,8 +39,6 @@ class Supplier extends CI_Controller
         $this->form_validation->set_rules('nama', 'nama', 'required|is_unique[supplier.nama]');
         $this->form_validation->set_rules('hp', 'hp', 'required');
         $this->form_validation->set_rules('alamat', 'alamat', 'required');
-
-
         $this->form_validation->set_message('required', '{field} tidak boleh kosong!');
         $this->form_validation->set_message('is_unique', '{field} sudah digunakan!');
         if ($this->form_validation->run()) {

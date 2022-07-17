@@ -44,7 +44,7 @@
 
 				<div class="container-fluid text-dark">
 					<!-- Page Heading -->
-					<h2 class="m-0 font-weight-bold text-primary">Pengaturan Bobot</h2>
+					<h2 class="m-0 font-weight-bold text-primary">Edit Penilaian Kriteria Supplier</h2>
 					<p class="mb-4">
 					</p>
 					<?php if ($this->session->flashdata('success')) : ?>

@@ -19,23 +19,22 @@ class Login extends CI_Controller{
 		
 			$row = $datalogin->row();
 			
-			$data_session = array('nama' => $username,'level' => $username,'status' => 'login','id_users'=>$row->id_users);
+			$data_session = array('nama' => $username,'level' => $username, 'status' => 'login','id_users'=>$row->id_users);
 			$this->session->set_userdata($data_session);
-			redirect(base_url("dashboard"));
+			redirect("dashboarduser");
 		}
 		else{
 			$cek = $this->login_model->cek_login("admin",$where)->num_rows();
 			$datalogin = $this->login_model->cek_login("admin",$where);
 			if($cek > 0){
 				$row = $datalogin->row();
-				$data_session = array('nama' => $username,'level' => $username,'status' => 'login','id_admin'=>$row->id_admin);
+				$data_session = array('nama' => $username,'level' => "admin",'status' => 'login','id_admin'=>$row->id_admin);
 				$this->session->set_userdata($data_session);
-				redirect(base_url("dashboard"));
+				redirect(base_url("dashboardadmin"));
 			}
 			else{
 				echo "<script>alert('Username dan password salah !');self.location='".base_url("login")."'</script>";
 			}
-			//echo "<script>alert('Username dan password salah !');self.location='".base_url("login")."'</script>";
 		}
 		
 	}

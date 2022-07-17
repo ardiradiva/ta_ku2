@@ -7,6 +7,15 @@ class Bobot extends CI_Controller
     public function __construct()
     {
         parent::__construct();
+        if($this->session->userdata('level') != 'admin'){
+			$this->session->set_flashdata('pesan','<div class="alert alert-danger alert-dismissible fade show" role="alert">
+				<strong>Maaf!</strong><br> Anda Harus Login Dulu
+				<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+				<span aria-hidden="true">&times;</span>
+				</button>
+				</div>');
+			redirect('login');
+		}
         $this->load->model("bobot_model");
         $this->load->library('session');
         $this->load->library('form_validation');
@@ -16,19 +25,6 @@ class Bobot extends CI_Controller
     {
         $data["bobot"] = $this->bobot_model->getAll();
         $this->load->view("bobot/edit", $data);
-    }
-
-    public function add()
-    {
-        $bobot = $this->bobot_model;
-        $validation = $this->form_validation;
-        $validation->set_rules($bobot->rules());
-        if ($validation->run()) {
-            $bobot->save();
-            $this->session->set_flashdata('success', 'Berhasil disimpan');
-        }
-
-        $this->load->view("bobot/add");
     }
 
     public function edit($id = null)
@@ -86,6 +82,7 @@ class Bobot extends CI_Controller
         );
 
         $this->bobot_model->edit_data($where, $data_update, 'bobot');
+        $this->session->set_flashdata('success', 'Berhasil disimpan');
         redirect('bobot/edit/' . $this->input->post('id'));
     }
 }

@@ -1,77 +1,51 @@
 <!DOCTYPE html>
 <html lang="en">
 
-<?php $this->load->view("head.php") ?>
+	<?php $this->load->view("head.php") ?>
 
-<body id="page-top">
+	<body id="page-top">
 
-	<!-- Page Wrapper -->
-	<div id="wrapper">
+		<!-- Page Wrapper -->
+		<div id="wrapper">
 
-		<?php $this->load->view("sidebar.php") ?>
+			<?php $this->load->view("sidebar.php") ?>
 
-		<!-- Content Wrapper -->
-		<div id="content-wrapper" class="d-flex flex-column">
+			<!-- Content Wrapper -->
+			<div id="content-wrapper" class="d-flex flex-column">
 
-			<!-- Main Content -->
-			<div id="content">
+				<!-- Main Content -->
+				<div id="content">
 
-				<?php $this->load->view("navbar.php") ?>
+					<?php $this->load->view("navbar.php") ?>
 
-				<!-- Sidebar Toggle (Topbar) -->
-				<button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3">
-					<i class="fa fa-bars"></i>
-				</button>
+						<div class="container-fluid">
 
-				<!-- Topbar Navbar -->
-				<ul class="navbar-nav ml-auto">
-					<li class="nav-item no-arrow">
-						<form class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search">
-							<div class="input-group">
-								<!-- <input type="text" class="form-control bg-light border-0 small" placeholder="Search for..." aria-label="Search" aria-describedby="basic-addon2"> -->
-								<div class="input-group-append">
-									<!-- <button class="btn btn-primary" type="button">
-											<i class="fas fa-search fa-sm"></i> -->
-									</button>
+						<!-- Page Heading -->
+						<h2 class="m-0 font-weight-bold text-primary">Edit Data Users</h2>
+						<p class="mb-4">
+						</p>
+
+							<?php if ($this->session->flashdata('success')) : ?>
+								<div class="alert alert-success" role="alert">
+									<?php echo $this->session->flashdata('success'); ?>
 								</div>
-							</div>
-						</form>
-					</li>
-				</ul>
+							<?php endif; ?>
 
-				</nav>
-
-				<div class="container-fluid">
-
-
-
-					<?php if ($this->session->flashdata('success')) : ?>
-						<div class="alert alert-success" role="alert">
-							<?php echo $this->session->flashdata('success'); ?>
-						</div>
-					<?php endif; ?>
-
-					<!-- Card  -->
-					<div class="card mb-3">
-						<div class="card-header">
-							<a href="<?php echo site_url('users/') ?>" class="btn btn-primary btn-sm"><i class="fas fa-arrow-left"></i> Kembali</a>
-						</div>
-						<div class="card-body">
-
-							<form action="" method="post" enctype="multipart/form-data">
-								<!-- Note: atribut action dikosongkan, artinya action-nya akan diproses 
-							oleh controller tempat vuew ini digunakan. Yakni index.php/users/edit/ID --->
-
-								<input type="hidden" name="id" value="<?php echo $users->id_users ?>" />
-
-								<div class="form-group">
-									<label for="name">Nama</label>
-									<input class="form-control <?php echo form_error('nama') ? 'is-invalid' : '' ?>" type="text" name="nama" placeholder="Nama" value="<?php echo $users->nama ?>" />
-									<div class="invalid-feedback">
-										<?php echo form_error('nama') ?>
+							<!-- Card  -->
+							<div class="card mb-3">
+								<div class="card-header">
+									<a href="<?php echo site_url('users/') ?>" class="btn btn-primary btn-sm"><i class="fas fa-arrow-left"></i> Kembali</a>
+								</div>
+								<div class="card-body">
+									<form action="<?=base_url()?>users/update_data" method="post" enctype="multipart/form-data"> <!-- Note: atribut action dikosongkan, artinya action-nya akan diproses oleh controller tempat vuew ini digunakan. Yakni index.php/users/edit/ID --->
+									<input type="hidden" name="id" value="<?php echo $users->id_users ?>" />
+									<div class="form-group">
+										<label for="name">Nama</label>
+										<input class="form-control <?php echo form_error('nama') ? 'is-invalid' : '' ?>" type="text" name="nama" placeholder="Nama" value="<?php echo $users->nama ?>" />
+										<div class="invalid-feedback">
+											<?php echo form_error('nama') ?>
+										</div>
 									</div>
-								</div>
-
 								<div class="form-group">
 									<label for="username">Username</label>
 									<input class="form-control <?php echo form_error('username') ? 'is-invalid' : '' ?>" type="text" name="username" min="0" placeholder="username" value="<?php echo $users->username ?>" />
@@ -79,10 +53,10 @@
 										<?php echo form_error('username') ?>
 									</div>
 								</div>
-
 								<div class="form-group">
 									<label for="password">Password</label>
-									<input class="form-control <?php echo form_error('password') ? 'is-invalid' : '' ?>" type="password" name="password" placeholder="password"   value="<?php echo $users->password ?>" />
+									<input class="form-control" type="password" name="password_lawas" value="<?php echo $users->password ?>" placeholder="password" hidden/>
+									<input class="form-control <?php echo form_error('password') ? 'is-invalid' : '' ?>" type="password" name="password" placeholder="password"/>
 									<div class="invalid-feedback">
 										<?php echo form_error('password') ?>
 									</div>
@@ -90,60 +64,21 @@
 								<input class="btn btn-success" type="submit" name="btn" value="Simpan" />
 							</form>
 						</div>
-
 						<div class="card-footer small text-muted">
 							* required fields
 						</div>
-
-
 					</div>
-					<!-- /.container-fluid -->
-
-					<!-- Sticky Footer -->
-
-
 				</div>
-
-
 			</div>
-			<!-- /.content-wrapper -->
-
 		</div>
-		<!-- /#wrapper -->
-
-
-
-		<!------------------------- ->
-
-
-                                </div>
-                            </div>
-                        </div>
-
-                    </div>
-
-
-                </div>
-                <!-- /.container-fluid -->
-
 	</div>
-	<!-- End of Main Content -->
-
 	<!-- Footer -->
-	<?php $this->load->view("footer.php") ?>
+	<!-- <?php $this->load->view("footer.php") ?> -->
 	<!-- End of Footer -->
-
-	</div>
-	<!-- End of Content Wrapper -->
-
-	</div>
-	<!-- End of Page Wrapper -->
-
-
-
-
+	<!-- Scroll to Top Button-->
+	<a class="scroll-to-top rounded" href="#page-top">
+		<i class="fas fa-angle-up"></i>
+	</a>
 	<?php $this->load->view("jsload.php") ?>
-
-</body>
-
+	</body>
 </html>
